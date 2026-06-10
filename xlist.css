@@ -1,0 +1,358 @@
+:root {
+    --bg: #0f1117;
+    --bg2: #1a1d27;
+    --bg3: #252836;
+    --border: #2e3241;
+    --text: #e1e4ed;
+    --text2: #8b8fa3;
+    --accent: #6c8cff;
+    --accent-hover: #9bb3ff;
+    --green: #4caf82;
+    --red: #e05555;
+    --orange: #e8a838;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    user-select: none;
+}
+
+/* -- Header -- */
+.header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 20px;
+    background: var(--bg2);
+    border-bottom: 1px solid var(--border);
+    flex-shrink: 0;
+}
+.header h1 {
+    font-size: 16px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+}
+.header-title {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+.logo-icon {
+    width: 20px;
+    height: 20px;
+    display: block;
+}
+.header-actions { display: flex; gap: 8px; align-items: center; }
+
+/* List selector — lives on the control row (the always-visible top row of the
+   list area), with the controls toggle pinned to its right. */
+.list-select {
+    padding: 7px 12px;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    background: var(--bg3);
+    color: var(--text);
+    font-size: 13px;
+    outline: none;
+    cursor: pointer;
+    min-width: 160px;
+    max-width: 260px;
+}
+.list-select:focus { border-color: var(--accent); }
+
+/* -- Buttons -- */
+.btn {
+    padding: 6px 14px;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    background: var(--bg3);
+    color: var(--text);
+    font-size: 13px;
+    cursor: pointer;
+    transition: all 0.15s;
+}
+.btn:hover { background: var(--border); }
+.btn:disabled { opacity: 0.4; cursor: default; }
+.btn:disabled:hover { background: var(--bg3); }
+.btn.primary { background: var(--accent); border-color: var(--accent); color: #fff; }
+.btn.primary:hover { opacity: 0.85; }
+.btn.danger { background: var(--red); border-color: var(--red); color: #fff; }
+.btn.danger:hover { opacity: 0.85; }
+
+/* -- Content -- */
+.content {
+    flex: 1;
+    overflow-y: auto;
+    padding: 20px;
+}
+.content::-webkit-scrollbar { width: 6px; }
+.content::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+/* -- Control row + collapsible controls drawer -- */
+/* Persistent row: list selector (left) + controls toggle (right). */
+.control-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 12px;
+}
+
+/* Recessed toggle — uses the header/status-bar background so it reads as chrome
+   rather than a peer action button. Square, icon-only, muted until hover. */
+.ctrl-toggle {
+    margin-left: auto;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 34px;
+    height: 32px;
+    padding: 0;
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    color: var(--text2);
+    cursor: pointer;
+}
+.ctrl-toggle:hover { color: var(--text); background: var(--bg3); }
+.ctrl-toggle .ico-chevron {
+    width: 18px;
+    height: 18px;
+    display: block;
+    transition: transform 0.18s ease;
+}
+.list-controls.collapsed .ctrl-toggle .ico-chevron { transform: rotate(180deg); }
+
+/* The drawer collapses via grid-template-rows 1fr -> 0fr (animates to content
+   height, no magic max-height). Degrades to an instant snap on Chromium < 107
+   (older Qt WebEngine) — still fully functional. */
+.drawer {
+    display: grid;
+    grid-template-rows: 1fr;
+    transition: grid-template-rows 0.18s ease;
+}
+.list-controls.collapsed .drawer { grid-template-rows: 0fr; }
+.drawer-inner {
+    overflow: hidden;
+    min-height: 0;
+    transition: opacity 0.18s ease;
+}
+.list-controls.collapsed .drawer-inner { opacity: 0; }
+
+/* The management controls inside the drawer. */
+.control-actions {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    margin-bottom: 16px;
+}
+.add-item-input {
+    padding: 8px 12px;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    background: var(--bg3);
+    color: var(--text);
+    font-size: 13px;
+    outline: none;
+    flex: 1;
+    min-width: 0;
+}
+.add-item-input:focus { border-color: var(--accent); }
+.add-item-input::placeholder { color: var(--text2); }
+
+/* -- Item list -- */
+.item-list {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+.item-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 12px;
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.12s, border-color 0.12s;
+}
+.item-row:hover { background: var(--bg3); }
+
+.item-check {
+    flex-shrink: 0;
+    width: 22px;
+    height: 22px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.item-check .ico { width: 22px; height: 22px; display: block; }
+.item-check .ico-x { color: var(--red); }
+.item-check .ico-check { color: var(--green); }
+
+.item-text {
+    font-size: 14px;
+    line-height: 1.4;
+    user-select: text;
+    -webkit-user-select: text;
+}
+
+/* Done-state: dim + strike the text so checked/unchecked separate at a glance.
+   Purely presentational — remove this rule if you'd rather only the icon change. */
+.item-row.checked .item-text {
+    color: var(--text2);
+    text-decoration: line-through;
+    text-decoration-color: var(--text2);
+}
+
+.empty-note {
+    color: var(--text2);
+    font-size: 14px;
+    text-align: center;
+    padding: 40px 20px;
+    line-height: 1.5;
+}
+
+/* -- Setup / Add form (shared layout with xstocks) -- */
+.setup {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    gap: 16px;
+}
+.setup h2 { font-size: 20px; font-weight: 600; }
+.setup p {
+    color: var(--text2);
+    font-size: 14px;
+    max-width: 400px;
+    text-align: center;
+    line-height: 1.5;
+}
+.setup > input[type="text"] {
+    padding: 10px 14px;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    background: var(--bg3);
+    color: var(--text);
+    font-size: 14px;
+    width: 340px;
+    outline: none;
+    text-align: center;
+}
+.setup > input[type="text"]:focus { border-color: var(--accent); }
+.setup-textarea {
+    padding: 10px 14px;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    background: var(--bg3);
+    color: var(--text);
+    font-size: 14px;
+    font-family: inherit;
+    width: 340px;
+    height: 180px;
+    resize: vertical;
+    outline: none;
+    line-height: 1.5;
+}
+.setup-textarea:focus { border-color: var(--accent); }
+.setup-textarea::placeholder { color: var(--text2); }
+.form-actions {
+    display: flex;
+    gap: 8px;
+}
+
+/* -- Reorder view -- */
+.reorder-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    width: 100%;
+    max-width: 420px;
+    margin: 4px 0 8px;
+}
+.reorder-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+.reorder-btn {
+    padding: 4px 10px;
+    font-size: 14px;
+    line-height: 1;
+}
+.reorder-pos {
+    width: 50px;
+    padding: 6px 8px;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    background: var(--bg3);
+    color: var(--text);
+    font-size: 13px;
+    text-align: center;
+    outline: none;
+    font-variant-numeric: tabular-nums;
+}
+.reorder-pos:focus { border-color: var(--accent); }
+.reorder-name {
+    flex: 1;
+    font-size: 14px;
+    color: var(--text);
+    text-align: left;
+}
+
+/* -- Settings view -- */
+.settings-group {
+    width: 100%;
+    max-width: 420px;
+    text-align: left;
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 14px 16px;
+}
+.lbl {
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--text2);
+    margin-bottom: 10px;
+}
+.opt {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 6px 0;
+    font-size: 14px;
+    color: var(--text);
+    cursor: pointer;
+}
+.opt input[type="radio"] {
+    accent-color: var(--accent);
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+    flex-shrink: 0;
+}
+
+/* -- Status bar -- */
+.status-bar {
+    padding: 6px 20px;
+    background: var(--bg2);
+    border-top: 1px solid var(--border);
+    font-size: 11px;
+    color: var(--text2);
+    display: flex;
+    justify-content: space-between;
+    flex-shrink: 0;
+}
