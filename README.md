@@ -7,7 +7,7 @@ Check out the "App Pics" below to see what it looks like and get a sense of what
 The interesting thing that I tried to do with this is that since it is written in python/html/css/javascript, if you have any background with any of those you should be able to go make changes easily and see what happens instantly since you don't have to worry about compiling anything. Also, with the Hearth framework it is nice to be able to serve the app up to a port that can be accessed from any other computer on your network for flexibility. When I am not on my home network, I have my phone tailscale to my linux machine so I can access this app (in serve mode) on the go.
 
 ## Features
-* Create lists whose items can be checked/un-checked for tracking purposes (preserved across sessions).
+* Create lists whose items can be checked/un-checked for tracking purposes (preserved across sessions)
 * Customize whether checked items remain in the same position in the list or automatically go to the bottom
 
 I would definitely like to add more features based on feedback.
