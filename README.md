@@ -1,5 +1,7 @@
 # xlist
 
+[![Code Status](https://github.com/karmahelen/hearth/actions/workflows/security-scans.yml/badge.svg)](https://github.com/karmahelen/hearth/security/code-scanning)
+
 xlist is a personal list/checklist app built on the Hearth framework (https://github.com/karmahelen/hearth). Lists are stored in a SQLite database (xlist.db) locally.
 
 Check out the "App Pics" below to see what it looks like and get a sense of what it can do.
