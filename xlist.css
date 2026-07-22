@@ -328,11 +328,15 @@ body {
     color: var(--text2);
     margin-bottom: 10px;
 }
+/* Radios sit indented under their .lbl caption so the grouping reads at a
+   glance. The indent is padding rather than margin because .opt is a <label> —
+   padding keeps the indented strip inside the click target, margin would push
+   it outside and leave a dead zone. */
 .opt {
     display: flex;
     align-items: center;
     gap: 10px;
-    padding: 6px 0;
+    padding: 6px 0 6px 12px;
     font-size: 14px;
     color: var(--text);
     cursor: pointer;
